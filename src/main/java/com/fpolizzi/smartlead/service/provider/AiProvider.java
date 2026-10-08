@@ -7,15 +7,10 @@ public interface AiProvider {
     /**
      * Generate text based on the input prompt
      * @param prompt the input text
-     * @return generated text or null if the provider is unavailable
+     * @return generated text (non-blank)
+     * @throws RuntimeException if the provider cannot complete the request
      */
     String generateText(String prompt);
-
-    /**
-     * Check if this provider is available
-     * @return true if the provider can be used
-     */
-    boolean isAvailable();
 
     /**
      * Get the name of this provider for logging
