@@ -25,7 +25,7 @@ public class Ticket {
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
-    @Column(length = 2000)
+    @Column(length = 1000)
     private String summary;
 
     @OneToOne
@@ -37,5 +37,15 @@ public class Ticket {
     private LocalDateTime createdAt;
 
     public Ticket() {
+    }
+
+    public Ticket(Long id, String title, Category category, Priority priority, String summary, Comment comment, LocalDateTime createdAt) {
+        this.id = id;
+        this.title = title;
+        this.category = category;
+        this.priority = priority;
+        this.summary = summary;
+        this.comment = comment;
+        this.createdAt = createdAt;
     }
 }
