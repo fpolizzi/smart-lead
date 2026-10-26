@@ -23,4 +23,13 @@ public class Comment {
     @Column(updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    public Comment() {
+    }
+
+    public Comment(Long id, String senderEmail, String content) {
+        this.id = id;
+        this.senderEmail = senderEmail;
+        this.content = content;
+    }
 }
