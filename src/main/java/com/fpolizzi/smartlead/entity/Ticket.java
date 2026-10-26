@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * Created by fpolizzi on 10/25/26
@@ -111,5 +112,22 @@ public class Ticket {
 
     public void setCreatedAt(LocalDateTime localDateTime) {
         this.createdAt = localDateTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Ticket ticket = (Ticket) o;
+        return Objects.equals(id, ticket.id) &&
+                Objects.equals(title, ticket.title) &&
+                category == ticket.category &&
+                priority == ticket.priority &&
+                Objects.equals(comment, ticket.comment) &&
+                Objects.equals(createdAt, ticket.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, category, priority, comment, createdAt);
     }
 }
