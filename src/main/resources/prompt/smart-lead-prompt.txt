@@ -83,4 +83,4 @@ Your objective is to analyze inbound contact form messages, determine if they sh
 }
 
 ### Inbound Message to Analyze:
-%s
+{{message}}
