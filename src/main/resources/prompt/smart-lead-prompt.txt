@@ -26,42 +26,47 @@ Your objective is to analyze inbound contact form messages, determine if they sh
 5. summary (string):
    - A short, factual 1-2 sentence summary of the message.
 
+6. supportCategory (string or null):
+   - Only when type is "support": must be exactly one of "BUG", "FAILURE", "BILLING", "ACCOUNT", "OTHER".
+   - "BUG": Product defects or incorrect behavior. "FAILURE": Outages or the service being unavailable. "BILLING": Charges, invoices, or refunds. "ACCOUNT": Login, access, or account settings. "OTHER": Support issues that fit none of these.
+   - For every other type, use null.
+
 ### Reference Examples:
 - Message: "Hi, I love your product! Keep up the great work."
-  Result: {"isLead": false, "title": "Positive Feedback", "type": "other", "urgency": "low", "summary": "User expressing praise for the product with no commercial inquiry."}
+  Result: {"isLead": false, "title": "Positive Feedback", "type": "other", "urgency": "low", "summary": "User expressing praise for the product with no commercial inquiry.", "supportCategory": null}
 
 - Message: "We’re a team of 50 engineers and we’d like to schedule a demo of your enterprise plan next week."
-  Result: {"isLead": true, "title": "Enterprise Demo Request - 50 Engineers", "type": "demo-request", "urgency": "high", "summary": "Engineering team of 50 requesting an enterprise plan demo next week."}
+  Result: {"isLead": true, "title": "Enterprise Demo Request - 50 Engineers", "type": "demo-request", "urgency": "high", "summary": "Engineering team of 50 requesting an enterprise plan demo next week.", "supportCategory": null}
 
 - Message: "What are your office hours?"
-  Result: {"isLead": false, "title": "Office Hours Inquiry", "type": "other", "urgency": "low", "summary": "General inquiry asking about company office hours."}
+  Result: {"isLead": false, "title": "Office Hours Inquiry", "type": "other", "urgency": "low", "summary": "General inquiry asking about company office hours.", "supportCategory": null}
 
 - Message: "Can you send me pricing details for the Pro plan? We’re comparing tools and need to make a decision by Friday."
-  Result: {"isLead": true, "title": "Pro Plan Pricing Inquiry - Decision by Friday", "type": "pricing-inquiry", "urgency": "high", "summary": "Prospect requesting Pro plan pricing with an urgent decision deadline by Friday."}
+  Result: {"isLead": true, "title": "Pro Plan Pricing Inquiry - Decision by Friday", "type": "pricing-inquiry", "urgency": "high", "summary": "Prospect requesting Pro plan pricing with an urgent decision deadline by Friday.", "supportCategory": null}
 
 - Message: "I’m a student working on a project, just wanted to say your docs are really helpful."
-  Result: {"isLead": false, "title": "Student Documentation Feedback", "type": "other", "urgency": "low", "summary": "Student sharing positive feedback about documentation."}
+  Result: {"isLead": false, "title": "Student Documentation Feedback", "type": "other", "urgency": "low", "summary": "Student sharing positive feedback about documentation.", "supportCategory": null}
 
 - Message: "We’re a SaaS company interested in a partnership or integration with your platform. Let’s connect."
-  Result: {"isLead": true, "title": "SaaS Partnership & Integration Inquiry", "type": "partnership", "urgency": "medium", "summary": "SaaS company interested in exploring partnership and platform integration opportunities."}
+  Result: {"isLead": true, "title": "SaaS Partnership & Integration Inquiry", "type": "partnership", "urgency": "medium", "summary": "SaaS company interested in exploring partnership and platform integration opportunities.", "supportCategory": null}
 
 - Message: "How do I reset my password?"
-  Result: {"isLead": false, "title": "Password Reset Inquiry", "type": "other", "urgency": "low", "summary": "General support question regarding password reset."}
+  Result: {"isLead": false, "title": "Password Reset Inquiry", "type": "other", "urgency": "low", "summary": "General support question regarding password reset.", "supportCategory": null}
 
 - Message: "Our CTO wants to evaluate your API for our new product. Can someone walk us through the technical capabilities?"
-  Result: {"isLead": true, "title": "API Evaluation & Technical Walkthrough Request", "type": "demo-request", "urgency": "medium", "summary": "Prospect CTO requesting technical walkthrough to evaluate API for a new product."}
+  Result: {"isLead": true, "title": "API Evaluation & Technical Walkthrough Request", "type": "demo-request", "urgency": "medium", "summary": "Prospect CTO requesting technical walkthrough to evaluate API for a new product.", "supportCategory": null}
 
 - Message: "Just checking if you ship internationally."
-  Result: {"isLead": false, "title": "International Shipping Inquiry", "type": "other", "urgency": "low", "summary": "General question asking whether international shipping is supported."}
+  Result: {"isLead": false, "title": "International Shipping Inquiry", "type": "other", "urgency": "low", "summary": "General question asking whether international shipping is supported.", "supportCategory": null}
 
 - Message: "We’ve been using the free tier for 3 months and we’re ready to upgrade. Can you help us pick the right plan for 200 users?"
-  Result: {"isLead": true, "title": "Plan Upgrade Inquiry - 200 Users", "type": "pricing-inquiry", "urgency": "high", "summary": "Free tier user looking to upgrade and asking for the right plan for 200 users."}
+  Result: {"isLead": true, "title": "Plan Upgrade Inquiry - 200 Users", "type": "pricing-inquiry", "urgency": "high", "summary": "Free tier user looking to upgrade and asking for the right plan for 200 users.", "supportCategory": null}
 
 - Message: "Your website looks great, nice design!"
-  Result: {"isLead": false, "title": "Website Design Feedback", "type": "other", "urgency": "low", "summary": "Casual compliment regarding website design."}
+  Result: {"isLead": false, "title": "Website Design Feedback", "type": "other", "urgency": "low", "summary": "Casual compliment regarding website design.", "supportCategory": null}
 
 - Message: "I’m experiencing issues with my billing. I was charged twice this month and need this resolved ASAP."
-  Result: {"isLead": true, "title": "Urgent Billing Issue - Double Charge", "type": "support", "urgency": "high", "summary": "Customer reporting double billing charge requiring urgent resolution."}
+  Result: {"isLead": true, "title": "Urgent Billing Issue - Double Charge", "type": "support", "urgency": "high", "summary": "Customer reporting double billing charge requiring urgent resolution.", "supportCategory": "BILLING"}
 
 ### Constraints:
 - Return ONLY a valid JSON object matching the schema below.
@@ -73,7 +78,8 @@ Your objective is to analyze inbound contact form messages, determine if they sh
   "title": "...",
   "type": "demo-request",
   "urgency": "high",
-  "summary": "..."
+  "summary": "...",
+  "supportCategory": null
 }
 
 ### Inbound Message to Analyze:
