@@ -5,6 +5,10 @@ package com.fpolizzi.smartlead.exception;
  * The response is an upstream failure, so the handler maps it to 502.
  */
 public class AiResponseParseException extends RuntimeException {
+    public AiResponseParseException(String message) {
+        super(message);
+    }
+
     public AiResponseParseException(String message, Throwable cause) {
         super(message, cause);
     }

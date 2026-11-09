@@ -30,7 +30,10 @@ public class OllamaProvider implements AiProvider {
         Map<String, Object> request = Map.of(
             "model", model,
             "prompt", prompt,
-            "stream", false
+            "stream", false,
+            // Force valid JSON output and keep sampling near-deterministic for the lead analysis.
+            "format", "json",
+            "options", Map.of("temperature", 0.1)
         );
 
         GenerateResponse response;

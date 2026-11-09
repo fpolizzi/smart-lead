@@ -18,7 +18,7 @@ public class AppConfig {
         factory.setConnectTimeout((int) connectTimeout.toMillis());
         factory.setReadTimeout((int) readTimeout.toMillis());
         return RestClient.builder()
-            .requestFactory(factory)
-            .build();
+                .requestFactory(factory)
+                .build();
     }
 }
