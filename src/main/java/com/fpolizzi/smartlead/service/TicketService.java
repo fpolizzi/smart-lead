@@ -3,7 +3,10 @@ package com.fpolizzi.smartlead.service;
 import com.fpolizzi.smartlead.dto.LeadAnalysisResponse;
 import com.fpolizzi.smartlead.entity.Comment;
 import com.fpolizzi.smartlead.entity.Ticket;
+import com.fpolizzi.smartlead.exception.LeadNotFoundException;
 import com.fpolizzi.smartlead.repository.TicketRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,5 +24,15 @@ public class TicketService {
     @Transactional
     public Ticket createFromAnalysis(LeadAnalysisResponse analysis, Comment comment) {
         return ticketRepository.save(mapper.toTicket(analysis, comment));
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Ticket> findAll(Pageable pageable) {
+        return ticketRepository.findAll(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Ticket getById(Long leadId) {
+        return ticketRepository.findById(leadId).orElseThrow(() -> new LeadNotFoundException(leadId));
     }
 }
