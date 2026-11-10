@@ -3,6 +3,7 @@ package com.fpolizzi.smartlead.service;
 import com.fpolizzi.smartlead.dto.InboundMessageRequest;
 import com.fpolizzi.smartlead.dto.LeadAnalysisResponse;
 import com.fpolizzi.smartlead.entity.Comment;
+import com.fpolizzi.smartlead.entity.Ticket;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,14 +26,12 @@ public class LeadIntakeService {
         this.ticketService = ticketService;
     }
 
-    public LeadAnalysisResponse process(InboundMessageRequest request) {
+    public IntakeResult process(InboundMessageRequest request) {
         // Saved first so the message is kept even if the AI call fails.
         Comment comment = commentService.record(request.senderEmail(), request.message());
 
         LeadAnalysisResponse analysis = qualificationService.qualifyMessage(request.message());
-        if (analysis.isLead()) {
-            ticketService.createFromAnalysis(analysis, comment);
-        }
-        return analysis;
+        Ticket ticket = analysis.isLead() ? ticketService.createFromAnalysis(analysis, comment) : null;
+        return new IntakeResult(comment, analysis, ticket);
     }
 }
