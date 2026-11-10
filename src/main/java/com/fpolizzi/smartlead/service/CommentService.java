@@ -2,6 +2,8 @@ package com.fpolizzi.smartlead.service;
 
 import com.fpolizzi.smartlead.entity.Comment;
 import com.fpolizzi.smartlead.repository.CommentRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,5 +20,10 @@ public class CommentService {
     @Transactional
     public Comment record(String senderEmail, String content) {
         return commentRepository.save(new Comment(senderEmail, content));
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Comment> findAll(Pageable pageable) {
+        return commentRepository.findAll(pageable);
     }
 }
