@@ -8,6 +8,7 @@ import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestClient;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
@@ -57,5 +58,19 @@ class OllamaProviderTest {
             .andRespond(withSuccess(responseBody, MediaType.APPLICATION_JSON));
 
         assertThrows(AiProviderException.class, () -> provider.generateText("test prompt"));
+    }
+
+    @Test
+    void requestsJsonFormatWithLowTemperature() {
+        RestClient restClient = builder.build();
+        OllamaProvider provider = new OllamaProvider(restClient, "http://localhost:11434/api/generate", "llama2");
+
+        server.expect(requestTo("http://localhost:11434/api/generate"))
+            .andExpect(jsonPath("$.format").value("json"))
+            .andExpect(jsonPath("$.options.temperature").value(0.1))
+            .andRespond(withSuccess("{\"response\":\"ok\"}", MediaType.APPLICATION_JSON));
+
+        provider.generateText("test prompt");
+        server.verify();
     }
 }
