@@ -10,7 +10,7 @@ import org.springframework.web.client.RestClientException;
 import java.util.Map;
 
 @Component
-@Order(2)
+@Order(3)
 public class OllamaProvider implements AiProvider {
 
     private final RestClient restClient;
