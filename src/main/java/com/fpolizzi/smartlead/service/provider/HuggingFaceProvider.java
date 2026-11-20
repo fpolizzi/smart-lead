@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-@Order(1)
+@Order(2)
 public class HuggingFaceProvider implements AiProvider {
 
     private final RestClient restClient;
@@ -71,10 +71,10 @@ public class HuggingFaceProvider implements AiProvider {
 
     private record ChatResponse(List<Choice> choices) {
         String firstContent() {
-            if (choices == null || choices.isEmpty() || choices.get(0).message() == null) {
+            if (choices == null || choices.isEmpty() || choices.getFirst().message() == null) {
                 return null;
             }
-            return choices.get(0).message().content();
+            return choices.getFirst().message().content();
         }
     }
 

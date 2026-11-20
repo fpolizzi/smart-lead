@@ -5,15 +5,15 @@ A Spring Boot API that uses AI to qualify inbound messages as potential leads.
 ## Prerequisites and setup
 
 - JDK 25 and Maven installed and available on your PATH.
-- A Hugging Face token with access to the configured model. Copy the example configuration and replace the placeholder with your token:
+- Groq and Hugging Face tokens with access to their configured models, if using those providers. Copy the example configuration and replace the placeholders with your tokens:
 
   ```sh
   cp .env-dummy .env
   ```
 
-  Set `HF_TOKEN` in `.env`. Keep it private: `.env` is ignored by Git; do not commit credentials.
+  Set `GROQ_TOKEN` and `HF_TOKEN` in `.env`. Keep them private: `.env` is ignored by Git; do not commit credentials.
 
-The application tries Hugging Face first, using `meta-llama/Llama-3.3-70B-Instruct`, then Ollama if the provider fails. An absent `HF_TOKEN` defaults to an empty value; the example placeholder is not a valid token. Neither skips the Hugging Face attempt.
+The application tries Groq first using `qwen/qwen3.8-27b`, then Hugging Face using `meta-llama/Llama-3.3-70B-Instruct`, and finally Ollama. The Groq model is configurable in `application.properties`. An absent or blank `GROQ_TOKEN` skips the Groq request; an invalid token triggers fallback. An absent `HF_TOKEN` defaults to an empty value and does not skip the Hugging Face attempt. The example placeholders are not valid tokens.
 
 For an optional local fallback, install Ollama, start its server and pull the configured model:
 
@@ -74,4 +74,4 @@ Both list endpoints use zero-based `page` and `size` parameters; they default to
 
 `LeadIntakeService` saves each message before requesting AI qualification. It creates a lead ticket only when the analysis identifies a lead; the saved message remains even if qualification fails. Data is stored in an in-memory H2 database and is lost on restart.
 
-The AI service tries Hugging Face first and falls back to Ollama on provider failure. `GlobalExceptionHandler` returns problem details for common failures: `400` for invalid input or malformed JSON, `404` for a missing lead, `503` when all AI providers are unavailable, and `502` when qualification receives unparseable AI output. Unsupported methods return `405`, and unexpected errors return `500`.
+The AI service tries Groq, Hugging Face, then Ollama on provider failure. `GlobalExceptionHandler` returns problem details for common failures: `400` for invalid input or malformed JSON, `404` for a missing lead, `503` when all AI providers are unavailable, and `502` when qualification receives unparseable AI output. Unsupported methods return `405`, and unexpected errors return `500`.
