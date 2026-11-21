@@ -72,6 +72,12 @@
             <artifactId>h2</artifactId>
         </dependency>
 
+        <!-- H2 Database Console -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-h2console</artifactId>
+        </dependency>
+
         <!-- Bean Validation -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
