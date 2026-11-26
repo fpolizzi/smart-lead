@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Messages')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container">
+    <h1 class="h3 mb-3">Messages</h1>
+
+    <div th:if="${warning}" class="alert alert-warning" role="alert" th:text="${warning}">Warning</div>
+
+    <div th:if="${messages.empty}" class="text-center text-muted py-5">
+        No messages yet. <a th:href="@{/ui/messages/new}">Send the first one.</a>
+    </div>
+
+    <div th:unless="${messages.empty}" class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+            <tr>
+                <th th:replace="~{fragments/layout :: sortHeader('#', 'id', '/ui/messages', ${sortProperty}, ${sortDirection}, ${messages.size})}"></th>
+                <th th:replace="~{fragments/layout :: sortHeader('From', 'senderEmail', '/ui/messages', ${sortProperty}, ${sortDirection}, ${messages.size})}"></th>
+                <th th:replace="~{fragments/layout :: sortHeader('Message', 'content', '/ui/messages', ${sortProperty}, ${sortDirection}, ${messages.size})}"></th>
+                <th th:replace="~{fragments/layout :: sortHeader('Received', 'createdAt', '/ui/messages', ${sortProperty}, ${sortDirection}, ${messages.size})}"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="message : ${messages.content}">
+                <td th:text="${message.id}">1</td>
+                <td th:text="${message.senderEmail ?: 'Not provided'}">email</td>
+                <td class="text-break" th:text="${message.content}">content</td>
+                <td class="text-nowrap" th:text="${#temporals.format(message.createdAt, 'yyyy-MM-dd HH:mm')}">date</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:replace="~{fragments/layout :: pagination(${messages}, '/ui/messages', ${sortProperty}, ${sortDirection})}"></div>
+</main>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Message received')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container" style="max-width: 720px;">
+    <div class="alert alert-success" role="alert">Message received.</div>
+
+    <div class="card mb-3">
+        <div class="card-header">Your message</div>
+        <div class="card-body">
+            <p class="mb-2 text-break" style="white-space: pre-wrap;" th:text="${intake.message.content}">message</p>
+            <small class="text-muted" th:text="${intake.message.senderEmail ?: 'No email provided'}">email</small>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header">AI analysis</div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-4">Lead</dt>
+                <dd class="col-sm-8" th:text="${intake.analysis.isLead()} ? 'Yes' : 'No'">Yes</dd>
+
+                <dt class="col-sm-4">Title</dt>
+                <dd class="col-sm-8" th:text="${intake.analysis.title ?: '-'}">-</dd>
+
+                <dt class="col-sm-4">Type</dt>
+                <dd class="col-sm-8" th:text="${intake.analysis.type ?: '-'}">-</dd>
+
+                <dt class="col-sm-4">Urgency</dt>
+                <dd class="col-sm-8" th:text="${intake.analysis.urgency ?: '-'}">-</dd>
+
+                <dt class="col-sm-4">Support category</dt>
+                <dd class="col-sm-8" th:text="${intake.analysis.supportCategory ?: '-'}">-</dd>
+
+                <dt class="col-sm-4">Summary</dt>
+                <dd class="col-sm-8" th:text="${intake.analysis.summary ?: '-'}">-</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div th:if="${intake.leadId != null}" class="alert alert-info d-flex justify-content-between align-items-center">
+        <span>A lead was opened for the sales team.</span>
+        <a class="btn btn-sm btn-primary" th:href="@{/ui/leads/{id}(id=${intake.leadId})}">View lead</a>
+    </div>
+    <div th:if="${intake.leadId == null}" class="alert alert-secondary">
+        This message did not qualify as a lead. It was stored with the other messages.
+    </div>
+
+    <a class="btn btn-outline-secondary" th:href="@{/ui/messages/new}">Send another message</a>
+</main>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${lead.title})}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container" style="max-width: 800px;">
+    <a class="btn btn-link px-0 mb-2" th:href="@{/ui/leads}">&larr; All leads</a>
+
+    <div class="d-flex justify-content-between align-items-start mb-3">
+        <h1 class="h3 mb-0" th:text="${lead.title}">Lead title</h1>
+        <span class="badge fs-6"
+              th:classappend="${lead.priority.name() == 'HIGH'} ? 'text-bg-danger' : (${lead.priority.name() == 'MEDIUM'} ? 'text-bg-warning' : 'text-bg-secondary')"
+              th:text="${lead.priority}">LOW</span>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-4">Lead ID</dt>
+                <dd class="col-sm-8" th:text="${lead.id}">1</dd>
+
+                <dt class="col-sm-4">Type</dt>
+                <dd class="col-sm-8" th:text="${lead.leadType}">DEMO_REQUEST</dd>
+
+                <dt class="col-sm-4">Support category</dt>
+                <dd class="col-sm-8" th:text="${lead.category ?: '-'}">-</dd>
+
+                <dt class="col-sm-4">Summary</dt>
+                <dd class="col-sm-8 text-break" th:text="${lead.summary}">summary</dd>
+
+                <dt class="col-sm-4">Source message</dt>
+                <dd class="col-sm-8">Message #<span th:text="${lead.messageId}">1</span></dd>
+
+                <dt class="col-sm-4">Created</dt>
+                <dd class="col-sm-8" th:text="${#temporals.format(lead.createdAt, 'yyyy-MM-dd HH:mm')}">date</dd>
+            </dl>
+        </div>
+    </div>
+</main>
+</body>
+</html>
