@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Leads')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container">
+    <h1 class="h3 mb-3">Leads</h1>
+
+    <div th:if="${leads.empty}" class="text-center text-muted py-5">
+        No leads yet. Leads appear here when a message qualifies.
+    </div>
+
+    <div th:unless="${leads.empty}" class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+            <tr>
+                <th th:replace="~{fragments/layout :: sortHeader('#', 'id', '/ui/leads', ${sortProperty}, ${sortDirection}, ${leads.size})}"></th>
+                <th th:replace="~{fragments/layout :: sortHeader('Title', 'title', '/ui/leads', ${sortProperty}, ${sortDirection}, ${leads.size})}"></th>
+                <th th:replace="~{fragments/layout :: sortHeader('Type', 'leadType', '/ui/leads', ${sortProperty}, ${sortDirection}, ${leads.size})}"></th>
+                <th th:replace="~{fragments/layout :: sortHeader('Priority', 'priority', '/ui/leads', ${sortProperty}, ${sortDirection}, ${leads.size})}"></th>
+                <th th:replace="~{fragments/layout :: sortHeader('Created', 'createdAt', '/ui/leads', ${sortProperty}, ${sortDirection}, ${leads.size})}"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="lead : ${leads.content}">
+                <td th:text="${lead.id}">1</td>
+                <td>
+                    <a th:href="@{/ui/leads/{id}(id=${lead.id})}" th:text="${lead.title}">Title</a>
+                </td>
+                <td th:text="${lead.leadType}">DEMO_REQUEST</td>
+                <td>
+                    <span class="badge"
+                          th:classappend="${lead.priority.name() == 'HIGH'} ? 'text-bg-danger' : (${lead.priority.name() == 'MEDIUM'} ? 'text-bg-warning' : 'text-bg-secondary')"
+                          th:text="${lead.priority}">LOW</span>
+                </td>
+                <td class="text-nowrap" th:text="${#temporals.format(lead.createdAt, 'yyyy-MM-dd HH:mm')}">date</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:replace="~{fragments/layout :: pagination(${leads}, '/ui/leads', ${sortProperty}, ${sortDirection})}"></div>
+</main>
+</body>
+</html>

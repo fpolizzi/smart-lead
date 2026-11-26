@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('New message')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container" style="max-width: 720px;">
+    <h1 class="h3 mb-3">Send us a message</h1>
+    <p class="text-muted">We read every message. If it is a sales, pricing, partnership or support request, we open a lead for the team.</p>
+
+    <form th:action="@{/ui/messages}" th:object="${messageForm}" method="post" novalidate>
+        <div class="mb-3">
+            <label for="senderEmail" class="form-label">Your email <span class="text-muted">(optional)</span></label>
+            <input type="email" id="senderEmail" class="form-control" placeholder="you@example.com"
+                   th:field="*{senderEmail}"
+                   th:classappend="${#fields.hasErrors('senderEmail')} ? 'is-invalid'">
+            <div class="invalid-feedback" th:errors="*{senderEmail}">Invalid email</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="message" class="form-label">Message</label>
+            <textarea id="message" rows="6" maxlength="2000" class="form-control"
+                      th:field="*{message}"
+                      th:classappend="${#fields.hasErrors('message')} ? 'is-invalid'"></textarea>
+            <div class="form-text">Up to 2000 characters.</div>
+            <div class="invalid-feedback" th:errors="*{message}">Message is required</div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Send message</button>
+    </form>
+</main>
+</body>
+</html>
