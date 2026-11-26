@@ -70,6 +70,18 @@ curl "http://localhost:8080/v1/api/leads/$LEAD_ID"
 
 Both list endpoints use zero-based `page` and `size` parameters; they default to 20 items sorted by `createdAt` descending, and the maximum page size is 25. Responses include `content` and `page` metadata. You can override sorting with, for example, `sort=createdAt,asc`.
 
+## Web UI
+
+A server-rendered interface (Thymeleaf and Bootstrap 5, loaded from a CDN) sits next to the API. Open these pages in a browser:
+
+| Page | URL |
+| --- | --- |
+| Send a message | `http://localhost:8080/v1/api/ui/messages/new` |
+| Stored messages | `http://localhost:8080/v1/api/ui/messages` |
+| Leads | `http://localhost:8080/v1/api/ui/leads` |
+
+On the list pages, click a column header to sort by it; click again to reverse the order. The sort is kept when you change page. `priority` sorts alphabetically (HIGH, LOW, MEDIUM), not by severity. The web pages use the same services as the API, so they follow the same rules. A message that the AI cannot analyse is still saved; the list page then shows a warning. Templates are in `src/main/resources/templates`.
+
 ## How it works and errors
 
 `LeadIntakeService` saves each message before requesting AI qualification. It creates a lead ticket only when the analysis identifies a lead; the saved message remains even if qualification fails. Data is stored in an in-memory H2 database and is lost on restart.
