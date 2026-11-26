@@ -39,11 +39,6 @@ public class MessageController {
         IntakeResult result = leadIntakeService.process(request);
         Ticket ticket = result.ticket();
 
-        MessageIntakeResponse body = new MessageIntakeResponse(
-                MessageResponse.from(result.comment()),
-                result.analysis(),
-                ticket == null ? null : ticket.getId());
-
         ResponseEntity.BodyBuilder response = ResponseEntity.status(HttpStatus.CREATED);
         if (ticket != null) {
             response.location(ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -51,7 +46,7 @@ public class MessageController {
                     .buildAndExpand(ticket.getId())
                     .toUri());
         }
-        return response.body(body);
+        return response.body(MessageIntakeResponse.from(result));
     }
 
     @GetMapping
